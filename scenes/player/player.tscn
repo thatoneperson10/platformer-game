@@ -1,23 +1,21 @@
 [gd_scene format=3 uid="uid://coxoa0juibbty"]
 
-[ext_resource type="Texture2D" uid="uid://b2dgel3uql5vt" path="res://icon.svg" id="1_8afob"]
 [ext_resource type="Script" uid="uid://cge5cw1ria1lk" path="res://scenes/player/player.gd" id="1_dovo2"]
+[ext_resource type="Texture2D" uid="uid://dyji2oeeqypcv" path="res://godot.png" id="2_gmlin"]
 [ext_resource type="Script" uid="uid://bs3f5stvgm64g" path="res://scenes/player/movement_component.gd" id="3_gmlin"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n3o4e"]
-size = Vector2(24, 24)
+size = Vector2(16, 16)
 
 [node name="Player" type="CharacterBody2D" unique_id=1082145479]
 script = ExtResource("1_dovo2")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1661118530]
-scale = Vector2(0.15, 0.15)
-texture = ExtResource("1_8afob")
+texture_filter = 1
+texture = ExtResource("2_gmlin")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=406197798]
 shape = SubResource("RectangleShape2D_n3o4e")
-
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1130076730]
 
 [node name="MovementComponent" type="Node" parent="." unique_id=1325737654]
 script = ExtResource("3_gmlin")

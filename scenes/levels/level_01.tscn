@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://besadbafatndd"]
 
 [ext_resource type="PackedScene" uid="uid://coxoa0juibbty" path="res://scenes/player/player.tscn" id="1_m802k"]
+[ext_resource type="Script" uid="uid://bi3v43825yjln" path="res://scripts/components/pixel_camera.gd" id="2_i2aat"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n3o4e"]
 size = Vector2(600, 40)
@@ -8,14 +9,30 @@ size = Vector2(600, 40)
 [node name="Level01" type="Node2D" unique_id=1050967744]
 
 [node name="Player" parent="." unique_id=1082145479 instance=ExtResource("1_m802k")]
-position = Vector2(200, 200)
 
 [node name="Ground" type="StaticBody2D" parent="." unique_id=1051851369]
-position = Vector2(320, 400)
+position = Vector2(0, 100)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ground" unique_id=24832103]
 shape = SubResource("RectangleShape2D_n3o4e")
 
 [node name="Polygon2D" type="Polygon2D" parent="Ground" unique_id=449248778]
-color = Color(0.5019608, 0.13333334, 0.16862746, 1)
+color = Color(0.28235295, 0.5294118, 0.25882354, 1)
 polygon = PackedVector2Array(-300, -20, 300, -20, 300, 20, -300, 20)
+
+[node name="Platform1" type="StaticBody2D" parent="." unique_id=144115344]
+position = Vector2(200, 0)
+scale = Vector2(0.25, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform1" unique_id=1708678597]
+shape = SubResource("RectangleShape2D_n3o4e")
+
+[node name="Polygon2D" type="Polygon2D" parent="Platform1" unique_id=711472328]
+color = Color(0.28235295, 0.5294118, 0.25882354, 1)
+polygon = PackedVector2Array(-300, -20, 300, -20, 300, 20, -300, 20)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=939253644 node_paths=PackedStringArray("target")]
+position_smoothing_speed = 10.0
+script = ExtResource("2_i2aat")
+target = NodePath("../Player")
+follow_speed = 32.0
