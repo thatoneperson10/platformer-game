@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://cge5cw1ria1lk" path="res://scenes/player/player.gd" id="1_dovo2"]
 [ext_resource type="Texture2D" uid="uid://dyji2oeeqypcv" path="res://godot.png" id="2_gmlin"]
 [ext_resource type="Script" uid="uid://bs3f5stvgm64g" path="res://scenes/player/movement_component.gd" id="3_gmlin"]
+[ext_resource type="Script" uid="uid://bi3v43825yjln" path="res://scripts/components/pixel_camera.gd" id="4_lvxji"]
+[ext_resource type="Script" uid="uid://byb7u52ulyfi6" path="res://scripts/components/dash_component.gd" id="5_p47bc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n3o4e"]
 size = Vector2(16, 16)
@@ -19,3 +21,11 @@ shape = SubResource("RectangleShape2D_n3o4e")
 
 [node name="MovementComponent" type="Node" parent="." unique_id=1325737654]
 script = ExtResource("3_gmlin")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1753437119 node_paths=PackedStringArray("target")]
+position_smoothing_speed = 10.0
+script = ExtResource("4_lvxji")
+target = NodePath("..")
+
+[node name="DashComponent" type="Node" parent="." unique_id=984743055]
+script = ExtResource("5_p47bc")
