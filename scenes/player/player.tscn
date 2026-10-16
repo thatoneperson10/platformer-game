@@ -5,11 +5,13 @@
 [ext_resource type="Script" uid="uid://bs3f5stvgm64g" path="res://scenes/player/movement_component.gd" id="3_gmlin"]
 [ext_resource type="Script" uid="uid://bi3v43825yjln" path="res://scripts/components/pixel_camera.gd" id="4_lvxji"]
 [ext_resource type="Script" uid="uid://byb7u52ulyfi6" path="res://scripts/components/dash_component.gd" id="5_p47bc"]
+[ext_resource type="Script" uid="uid://djw6kid5t7n0s" path="res://scripts/components/wall_movement_component.gd" id="6_75vfm"]
+[ext_resource type="Script" uid="uid://dtcjr80upugwd" path="res://scripts/components/slam_component.gd" id="7_0owmy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n3o4e"]
 size = Vector2(16, 16)
 
-[node name="Player" type="CharacterBody2D" unique_id=1082145479]
+[node name="Player" type="CharacterBody2D" unique_id=1082145479 groups=["player"]]
 script = ExtResource("1_dovo2")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1661118530]
@@ -19,13 +21,19 @@ texture = ExtResource("2_gmlin")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=406197798]
 shape = SubResource("RectangleShape2D_n3o4e")
 
-[node name="MovementComponent" type="Node" parent="." unique_id=1325737654]
-script = ExtResource("3_gmlin")
-
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1753437119 node_paths=PackedStringArray("target")]
 position_smoothing_speed = 10.0
 script = ExtResource("4_lvxji")
 target = NodePath("..")
 
+[node name="MovementComponent" type="Node" parent="." unique_id=1325737654]
+script = ExtResource("3_gmlin")
+
 [node name="DashComponent" type="Node" parent="." unique_id=984743055]
 script = ExtResource("5_p47bc")
+
+[node name="WallMovementComponent" type="Node" parent="." unique_id=2072381379]
+script = ExtResource("6_75vfm")
+
+[node name="SlamComponent" type="Node" parent="." unique_id=1293571385]
+script = ExtResource("7_0owmy")

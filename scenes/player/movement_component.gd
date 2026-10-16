@@ -1,4 +1,3 @@
-
 extends Node
 
 @export_group("Ground Movement")
@@ -12,7 +11,7 @@ extends Node
 @export var air_friction: float = 0.0
 
 @export_group("Bunny Hopping")
-@export var bhop_boost: float = 70.0
+@export var bhop_boost: float = 35.0
 @export var bhop_min_speed: float = 200.0
 
 @export_group("Jumping")
@@ -33,7 +32,11 @@ extends Node
 var coyote_timer: float = 0.0
 var jump_buffer_timer: float = 0.0
 
-func update_movement(delta: float, movement_locked: bool = false) -> void:
+func update_movement(
+	delta: float,
+	movement_locked: bool = false,
+	horizontal_locked: bool = false
+) -> void:
 	update_timers(delta)
 
 	if movement_locked:
@@ -44,7 +47,9 @@ func update_movement(delta: float, movement_locked: bool = false) -> void:
 	var jumped: bool = handle_jump()
 
 	handle_jump_cut()
-	handle_horizontal_movement(delta, jumped)
+
+	if not horizontal_locked:
+		handle_horizontal_movement(delta, jumped)
 
 func update_timers(delta: float) -> void:
 	if player.is_on_floor():
