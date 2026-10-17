@@ -6,6 +6,7 @@ extends CharacterBody2D
 @onready var wall = $WallMovementComponent
 @onready var slam = $SlamComponent
 @onready var grapple = $GrappleComponent
+@onready var afterimage = $AfterimageComponent
 @onready var animation_component = get_node_or_null("AnimationComponent")
 
 var spawn_position: Vector2
@@ -20,6 +21,8 @@ func _physics_process(delta: float) -> void:
 		dash.facing_direction = horizontal
 
 	dash.update_dash(delta)
+
+	var dash_visual_active: bool = dash.is_dashing or dash.dash_ended_this_frame
 
 	grapple.update_input()
 
@@ -42,7 +45,9 @@ func _physics_process(delta: float) -> void:
 	movement.update_movement(
 		delta,
 		movement_locked,
-		wall.is_horizontal_locked() or (grapple.is_grappling and not is_on_floor())
+		wall.is_horizontal_locked() or (
+			grapple.is_grappling and not is_on_floor()
+		)
 	)
 
 	wall.update_wall_movement(
@@ -60,6 +65,8 @@ func _physics_process(delta: float) -> void:
 
 	if animation_component:
 		animation_component.update_animation()
+
+	afterimage.update_afterimages(delta, dash_visual_active)
 
 func respawn() -> void:
 	grapple.reset_grapple()
@@ -84,5 +91,7 @@ func respawn() -> void:
 
 	movement.coyote_timer = 0.0
 	movement.jump_buffer_timer = 0.0
+
+	afterimage.reset_afterimages()
 
 	reset_physics_interpolation()

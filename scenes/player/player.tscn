@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://dtcjr80upugwd" path="res://scripts/components/slam_component.gd" id="7_0owmy"]
 [ext_resource type="Script" uid="uid://crdep5v1cqyae" path="res://scripts/components/grapple_component.gd" id="8_qek5x"]
 [ext_resource type="Script" uid="uid://cp1my8cxfjrox" path="res://scenes/player/animation_component.gd" id="10_h17s1"]
+[ext_resource type="Script" uid="uid://bxt870msiphym" path="res://scenes/player/afterimage_component.gd" id="11_je7p5"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_je7p5"]
 atlas = ExtResource("3_h17s1")
@@ -93,7 +94,7 @@ script = ExtResource("1_dovo2")
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_n3o4e")
 animation = &"run"
-frame_progress = 0.09272442
+frame_progress = 0.8306414
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=406197798]
 position = Vector2(0, 1.5)
@@ -109,8 +110,6 @@ script = ExtResource("3_gmlin")
 
 [node name="DashComponent" type="Node" parent="." unique_id=984743055]
 script = ExtResource("5_p47bc")
-dash_boost = 520.0
-dash_duration = 0.01
 
 [node name="WallMovementComponent" type="Node" parent="." unique_id=2072381379]
 script = ExtResource("6_75vfm")
@@ -128,3 +127,8 @@ script = ExtResource("8_qek5x")
 
 [node name="AnimationComponent" type="Node" parent="." unique_id=387981310]
 script = ExtResource("10_h17s1")
+
+[node name="AfterimageComponent" type="Node" parent="." unique_id=1922987719]
+script = ExtResource("11_je7p5")
+spawn_interval = 0.05
+fade_duration = 0.5
