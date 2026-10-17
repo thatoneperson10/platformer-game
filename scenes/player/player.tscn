@@ -1,25 +1,102 @@
 [gd_scene format=3 uid="uid://coxoa0juibbty"]
 
 [ext_resource type="Script" uid="uid://cge5cw1ria1lk" path="res://scenes/player/player.gd" id="1_dovo2"]
-[ext_resource type="Texture2D" uid="uid://dyji2oeeqypcv" path="res://godot.png" id="2_gmlin"]
+[ext_resource type="Texture2D" uid="uid://2cxvuv56egeg" path="res://assets/sprites/robot.png" id="2_5gtgg"]
 [ext_resource type="Script" uid="uid://bs3f5stvgm64g" path="res://scripts/components/movement_component.gd" id="3_gmlin"]
+[ext_resource type="Texture2D" uid="uid://ijam3ybh1u7d" path="res://assets/sprites/robot-run-polished-sheet.png" id="3_h17s1"]
 [ext_resource type="Script" uid="uid://bi3v43825yjln" path="res://scripts/components/pixel_camera.gd" id="4_lvxji"]
 [ext_resource type="Script" uid="uid://byb7u52ulyfi6" path="res://scripts/components/dash_component.gd" id="5_p47bc"]
 [ext_resource type="Script" uid="uid://djw6kid5t7n0s" path="res://scripts/components/wall_movement_component.gd" id="6_75vfm"]
 [ext_resource type="Script" uid="uid://dtcjr80upugwd" path="res://scripts/components/slam_component.gd" id="7_0owmy"]
 [ext_resource type="Script" uid="uid://crdep5v1cqyae" path="res://scripts/components/grapple_component.gd" id="8_qek5x"]
+[ext_resource type="Script" uid="uid://cp1my8cxfjrox" path="res://scenes/player/animation_component.gd" id="10_h17s1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_je7p5"]
+atlas = ExtResource("3_h17s1")
+region = Rect2(0, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fm80t"]
+atlas = ExtResource("3_h17s1")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gx1jg"]
+atlas = ExtResource("3_h17s1")
+region = Rect2(48, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ugbui"]
+atlas = ExtResource("3_h17s1")
+region = Rect2(72, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fcs02"]
+atlas = ExtResource("3_h17s1")
+region = Rect2(96, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_myrg7"]
+atlas = ExtResource("3_h17s1")
+region = Rect2(120, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kvlxm"]
+atlas = ExtResource("3_h17s1")
+region = Rect2(144, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uf5tr"]
+atlas = ExtResource("3_h17s1")
+region = Rect2(168, 0, 24, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_n3o4e"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_5gtgg")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_je7p5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fm80t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gx1jg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ugbui")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fcs02")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_myrg7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kvlxm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uf5tr")
+}],
+"loop": 1,
+"name": &"run",
+"speed": 12.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n3o4e"]
-size = Vector2(16, 16)
+size = Vector2(14, 21)
 
 [node name="Player" type="CharacterBody2D" unique_id=1082145479 groups=["player"]]
 script = ExtResource("1_dovo2")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1661118530]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=168300701]
 texture_filter = 1
-texture = ExtResource("2_gmlin")
+sprite_frames = SubResource("SpriteFrames_n3o4e")
+animation = &"run"
+frame_progress = 0.09272442
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=406197798]
+position = Vector2(0, 1.5)
 shape = SubResource("RectangleShape2D_n3o4e")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1753437119 node_paths=PackedStringArray("target")]
@@ -48,3 +125,6 @@ default_color = Color(0, 0, 0, 1)
 
 [node name="GrappleComponent" type="Node" parent="." unique_id=1197416690]
 script = ExtResource("8_qek5x")
+
+[node name="AnimationComponent" type="Node" parent="." unique_id=387981310]
+script = ExtResource("10_h17s1")
