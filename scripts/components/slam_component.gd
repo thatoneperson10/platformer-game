@@ -87,3 +87,12 @@ func finish_slam() -> void:
 	player.velocity.y = 0.0
 
 	slam_impact.emit(player.global_position)
+
+
+func cancel_slam() -> void:
+	if not is_slamming:
+		return
+
+	is_slamming = false
+	is_starting = false
+	startup_timer = 0.0

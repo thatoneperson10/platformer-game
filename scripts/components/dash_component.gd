@@ -6,6 +6,7 @@ extends Node
 @export var minimum_dash_speed: float = 480.0
 @export var dash_duration: float = 0.13
 @export var max_total_speed: float = 1400.0
+@export var max_upward_dash_speed: float = 480.0
 
 @onready var player: CharacterBody2D = get_parent()
 
@@ -54,6 +55,9 @@ func start_dash() -> void:
 	)
 
 	dash_velocity = player.velocity + dash_direction * impulse
+	
+	if dash_direction.y < 0.0:
+		dash_velocity.y = maxf(dash_velocity.y, -max_upward_dash_speed)
 
 	if max_total_speed > 0.0:
 		dash_velocity = dash_velocity.limit_length(max_total_speed)
@@ -67,3 +71,13 @@ func finish_dash() -> void:
 	dash_ended_this_frame = true
 
 	player.velocity = dash_velocity
+
+
+func cancel_dash() -> void:
+	if not is_dashing:
+		return
+
+	is_dashing = false
+	dash_timer = 0.0
+	dash_ended_this_frame = false
+	dash_velocity = player.velocity

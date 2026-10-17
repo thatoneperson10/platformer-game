@@ -5,9 +5,13 @@ extends CharacterBody2D
 @onready var dash = $DashComponent
 @onready var wall = $WallMovementComponent
 @onready var slam = $SlamComponent
+@onready var grapple = $GrappleComponent
 @onready var animation_component = get_node_or_null("AnimationComponent")
 
 var spawn_position: Vector2
+
+func _ready() -> void:
+	spawn_position = global_position
 
 func _physics_process(delta: float) -> void:
 	var horizontal: float = Input.get_axis("move_left", "move_right")
@@ -15,10 +19,21 @@ func _physics_process(delta: float) -> void:
 	if horizontal != 0.0:
 		dash.facing_direction = horizontal
 
-	if not slam.is_slamming:
-		dash.update_dash(delta)
+	dash.update_dash(delta)
+
+	grapple.update_input()
+
+	if grapple.is_grappling:
+		if dash.is_dashing:
+			dash.cancel_dash()
+
+		if slam.is_slamming:
+			slam.cancel_slam()
 
 	var dash_locked: bool = dash.is_dashing or dash.dash_ended_this_frame
+
+	if Input.is_action_just_pressed("slam"):
+		grapple.detach()
 
 	slam.update_slam(delta, dash_locked)
 
@@ -27,7 +42,7 @@ func _physics_process(delta: float) -> void:
 	movement.update_movement(
 		delta,
 		movement_locked,
-		wall.is_horizontal_locked()
+		wall.is_horizontal_locked() or (grapple.is_grappling and not is_on_floor())
 	)
 
 	wall.update_wall_movement(
@@ -36,17 +51,19 @@ func _physics_process(delta: float) -> void:
 		movement
 	)
 
+	grapple.apply_grapple(delta)
+
 	move_and_slide()
 
+	grapple.after_move()
 	slam.after_move()
 
 	if animation_component:
 		animation_component.update_animation()
 
-func _ready() -> void:
-	spawn_position = global_position
-
 func respawn() -> void:
+	grapple.reset_grapple()
+
 	global_position = spawn_position
 	velocity = Vector2.ZERO
 
@@ -63,6 +80,7 @@ func respawn() -> void:
 
 	wall.is_wall_sliding = false
 	wall.wall_jump_lock_timer = 0.0
+	wall.wall_jump_direction = 0.0
 
 	movement.coyote_timer = 0.0
 	movement.jump_buffer_timer = 0.0

@@ -2,11 +2,12 @@
 
 [ext_resource type="Script" uid="uid://cge5cw1ria1lk" path="res://scenes/player/player.gd" id="1_dovo2"]
 [ext_resource type="Texture2D" uid="uid://dyji2oeeqypcv" path="res://godot.png" id="2_gmlin"]
-[ext_resource type="Script" uid="uid://bs3f5stvgm64g" path="res://scenes/player/movement_component.gd" id="3_gmlin"]
+[ext_resource type="Script" uid="uid://bs3f5stvgm64g" path="res://scripts/components/movement_component.gd" id="3_gmlin"]
 [ext_resource type="Script" uid="uid://bi3v43825yjln" path="res://scripts/components/pixel_camera.gd" id="4_lvxji"]
 [ext_resource type="Script" uid="uid://byb7u52ulyfi6" path="res://scripts/components/dash_component.gd" id="5_p47bc"]
 [ext_resource type="Script" uid="uid://djw6kid5t7n0s" path="res://scripts/components/wall_movement_component.gd" id="6_75vfm"]
 [ext_resource type="Script" uid="uid://dtcjr80upugwd" path="res://scripts/components/slam_component.gd" id="7_0owmy"]
+[ext_resource type="Script" uid="uid://crdep5v1cqyae" path="res://scripts/components/grapple_component.gd" id="8_qek5x"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n3o4e"]
 size = Vector2(16, 16)
@@ -31,9 +32,19 @@ script = ExtResource("3_gmlin")
 
 [node name="DashComponent" type="Node" parent="." unique_id=984743055]
 script = ExtResource("5_p47bc")
+dash_boost = 520.0
+dash_duration = 0.01
 
 [node name="WallMovementComponent" type="Node" parent="." unique_id=2072381379]
 script = ExtResource("6_75vfm")
 
 [node name="SlamComponent" type="Node" parent="." unique_id=1293571385]
 script = ExtResource("7_0owmy")
+
+[node name="GrappleLine" type="Line2D" parent="." unique_id=1879977032]
+points = PackedVector2Array(0, -180)
+width = 2.0
+default_color = Color(0, 0, 0, 1)
+
+[node name="GrappleComponent" type="Node" parent="." unique_id=1197416690]
+script = ExtResource("8_qek5x")
