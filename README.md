@@ -1,39 +1,36 @@
 platformer
 
-just a random 2d parkour game i'm making in godot
+just a 2d parkour game i've been working on for fun. you play as a little robot and mess around with different movement mechanics like dashing, wall jumping, bunny hopping, and grappling. the main goal right now is just to make movement feel smooth and fun.
 
-mostly just messing around with movement and trying to make it feel good
+i made this in godot 4 using gdscript, and drew the sprites and tiles in aseprite. i've mostly been working on the movement system, animations, and some visual effects. it's still pretty unfinished lol
 
-still very unfinished lmao
+how to play
+
+download the windows build, extract it if needed, and run the .exe file.
 
 controls
 
-A/D - move
+- A/D - move
+- Z - jump
+- X - dash
+- Space - slam
+- C (hold) - grapple
+- W/S - aim dash up/down
 
-Z - jump
+features
 
-X - dash
+- bunny hopping
+- 8-directional dashing
+- wall jumping and sliding
+- ground slamming
+- momentum-based grappling
+- dash afterimages
+- animated robot
 
-C - slam
+screenshots
 
-Space - grapple
+i'll add some screenshots here soon
 
-W/S - aim dash up/down
+other stuff
 
-stuff i've added:
-
-bunny hopping
-
-dashing
-
-wall jumping
-
-ground slamming
-
-grappling hooks
-
-a little robot
-
-some other fun stuff
-
-inspired by celeste and ultrakill
+still a work in progress, so there's probably some bugs. gonna keep adding more stuff
