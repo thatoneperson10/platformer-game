@@ -116,6 +116,7 @@ script = ExtResource("6_75vfm")
 
 [node name="SlamComponent" type="Node" parent="." unique_id=1293571385]
 script = ExtResource("7_0owmy")
+slam_speed = 500.0
 
 [node name="GrappleLine" type="Line2D" parent="." unique_id=1879977032]
 points = PackedVector2Array(0, -180)

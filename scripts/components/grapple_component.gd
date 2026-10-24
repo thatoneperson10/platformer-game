@@ -6,13 +6,16 @@ extends Node
 @export var minimum_rope_length: float = 24.0
 @export var maximum_rope_length: float = 320.0
 
+@export_group("Input Buffer")
+@export var grapple_buffer_time: float = 0.2
+
 @export_group("Grapple Catch")
 @export_range(0.0, 1.0, 0.05) var catch_assist: float = 0.85
 @export var catch_speed_multiplier: float = 1.0
 
 @export_group("Rope Visuals")
 @export var rope_sag_strength: float = 0.7
-@export var rope_segments: int = 24
+@export_range(2, 64, 1) var rope_segments: int = 24
 @export var rope_smoothing: float = 12.0
 
 @onready var player: CharacterBody2D = get_parent()
@@ -21,6 +24,7 @@ extends Node
 var is_grappling: bool = false
 var anchor: Node2D = null
 var rope_length: float = 0.0
+var grapple_buffer_timer: float = 0.0
 var current_sag: float = 0.0
 
 func _ready() -> void:
@@ -28,11 +32,36 @@ func _ready() -> void:
 	rope.clear_points()
 
 func update_input() -> void:
+	var delta: float = get_physics_process_delta_time()
+
 	if Input.is_action_just_released("grapple"):
+		grapple_buffer_timer = 0.0
 		detach()
+		return
 
 	if Input.is_action_just_pressed("grapple"):
-		try_grapple()
+		grapple_buffer_timer = maxf(grapple_buffer_time, delta)
+
+	if is_grappling:
+		grapple_buffer_timer = 0.0
+		return
+
+	if not Input.is_action_pressed("grapple"):
+		grapple_buffer_timer = 0.0
+		return
+
+	if grapple_buffer_timer <= 0.0:
+		return
+
+	try_grapple()
+
+	grapple_buffer_timer = maxf(
+		grapple_buffer_timer - delta,
+		0.0
+	)
+
+	if is_grappling:
+		grapple_buffer_timer = 0.0
 
 func try_grapple() -> void:
 	if is_grappling:
@@ -46,7 +75,9 @@ func try_grapple() -> void:
 			continue
 
 		var point: Node2D = candidate
-		var distance: float = player.global_position.distance_to(point.global_position)
+		var distance: float = player.global_position.distance_to(
+			point.global_position
+		)
 
 		if distance > closest_distance:
 			continue
@@ -58,6 +89,7 @@ func try_grapple() -> void:
 		return
 
 	anchor = closest
+
 	rope_length = clampf(
 		closest_distance,
 		minimum_rope_length,
@@ -68,9 +100,13 @@ func try_grapple() -> void:
 	apply_catch_assist()
 
 	rope.visible = true
+	current_sag = 0.0
 	update_rope()
 
 func apply_catch_assist() -> void:
+	if not is_instance_valid(anchor):
+		return
+
 	var offset: Vector2 = player.global_position - anchor.global_position
 
 	if offset.length_squared() < 0.001:
@@ -97,7 +133,10 @@ func apply_catch_assist() -> void:
 		catch_assist
 	)
 
-	var inward_speed: float = minf(player.velocity.dot(radial), 0.0)
+	var inward_speed: float = minf(
+		player.velocity.dot(radial),
+		0.0
+	)
 
 	player.velocity = tangent * assisted_speed
 	player.velocity += radial * inward_speed
@@ -149,7 +188,6 @@ func after_move() -> void:
 
 	update_rope(get_physics_process_delta_time())
 
-
 func update_rope(delta: float = 0.016) -> void:
 	if not is_grappling or not is_instance_valid(anchor):
 		return
@@ -159,7 +197,6 @@ func update_rope(delta: float = 0.016) -> void:
 
 	var distance: float = start.distance_to(end)
 	var slack: float = maxf(rope_length - distance, 0.0)
-
 	var target_sag: float = slack * rope_sag_strength
 
 	current_sag = lerpf(
@@ -169,29 +206,27 @@ func update_rope(delta: float = 0.016) -> void:
 	)
 
 	var points: PackedVector2Array = PackedVector2Array()
+	var segment_count: int = maxi(rope_segments, 2)
 
-	for i in range(rope_segments + 1):
-		var t: float = float(i) / float(rope_segments)
-
+	for i in range(segment_count + 1):
+		var t: float = float(i) / float(segment_count)
 		var point: Vector2 = start.lerp(end, t)
 
-		var sag: float = sin(t * PI) * current_sag
-
-		point.y += sag
+		point.y += sin(t * PI) * current_sag
 
 		points.append(rope.to_local(point))
 
 	rope.points = points
-
 
 func detach() -> void:
 	is_grappling = false
 	anchor = null
 	rope_length = 0.0
 	current_sag = 0.0
-	
+
 	rope.visible = false
 	rope.clear_points()
 
 func reset_grapple() -> void:
+	grapple_buffer_timer = 0.0
 	detach()
